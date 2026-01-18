@@ -68,7 +68,7 @@ You can run the **Faculty Data Engineering Pipeline** by executing each stage ma
 Run the Scrapy spider to collect raw faculty data:
 ```bash
 cd faculty_scraper
-scrapy crawl faculty_spider -o raw_data.json
+python -m scrapy crawl faculty_spider -O raw_data.json
 ```
 **Step B: Transformation & Storage**
 Clean the raw JSON data and load it into the SQLite database:
