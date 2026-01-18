@@ -276,6 +276,7 @@ switch ($STAGE) {
         $env:DATABASE_NAME = $DB_NAME
         $env:EXPORT_JSON_PATH = $EXPORT_JSON
 
+        Write-Host "${GREEN}____________________________________________________________________${NC}"
         Write-Host "${GREEN}DEPipeline Stage 4: The serving process is starting...${NC}"
         Write-Host "${GREEN}Database: $DATABASE_NAME | Export File: $EXPORT_JSON_PATH${NC}"
 
