@@ -33,12 +33,13 @@
 
 #         # Verify that the target website is reachable before initiating the scraper.
 #         echo -e "${CYAN}Checking website connectivity...${NC}"
-#         if curl -s --head --request GET "$READ_URL" | grep "200 OK" > /dev/null; then
-#             echo -e "${GREEN}The website is reachable.${NC}"
-#         else
-#             echo -e "${RED}Error: Cannot reach $READ_URL. Aborting the ingestion process.${NC}"
-#             exit 1
-#         fi
+#         if curl -s -L --head "$READ_URL" | grep -E "HTTP/.* (200|301|302)" > /dev/null; then
+            echo -e "${GREEN}The website is reachable.${NC}"
+          else
+            echo -e "${RED}Error: Cannot reach $READ_URL. Aborting the ingestion process.${NC}"
+            exit 1
+          fi
+
 
 #         # Prompt the user for a filename to store the raw scraped data.
 #         echo -ne "${CYAN}Enter RAW file name (press Enter for default: raw_data.json): ${NC}"
