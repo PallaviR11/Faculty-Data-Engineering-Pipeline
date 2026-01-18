@@ -334,6 +334,7 @@ case "$STAGE" in
         export DATABASE_NAME=$DB_NAME
         export EXPORT_JSON_PATH=$EXPORT_JSON
 
+        echo -e "${GREEN}____________________________________________________________________${NC}"
         echo -e "${GREEN}DEPipeline Stage 4: The serving process is starting...${NC}"
         echo -e "${GREEN}Database: $DATABASE_NAME | Export File: $EXPORT_JSON_PATH${NC}"
 
