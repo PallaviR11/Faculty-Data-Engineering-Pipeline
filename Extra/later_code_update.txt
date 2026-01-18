@@ -1,0 +1,11 @@
+# for multiple colleges
+
+self.curr.execute("""
+    CREATE TABLE IF NOT EXISTS Faculty (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT UNIQUE,  -- THIS IS THE KEY
+        college_name TEXT,  -- ADD THIS to track which college they belong to
+        ... (rest of your columns)
+    )
+""")
