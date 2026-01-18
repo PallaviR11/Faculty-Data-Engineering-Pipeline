@@ -34,7 +34,12 @@ The project is structured into four distinct stages:
 ## Installation & Setup
 Follow these steps to set up the Faculty Data Engineering Pipeline on your local machine.
 ### 1. Prerequisites
-Ensure you have **Python 3.10+** installed on your system.
+* **Python 3.10+**
+* **curl**: Required for website connectivity checks in the shell script.
+  
+  **On Ubuntu:**
+  ```bash
+  sudo apt update && sudo apt install curl -y
 ### 2. Clone the Repository
 Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
 
