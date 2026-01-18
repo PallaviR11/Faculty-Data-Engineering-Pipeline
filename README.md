@@ -68,17 +68,22 @@ You can run the **Faculty Data Engineering Pipeline** by executing each stage ma
 Run the Scrapy spider to collect raw faculty data:
 ```bash
 cd faculty_scraper
-python -m scrapy crawl faculty_spider -O raw_data.json
+./depipeline.sh ingestion --url https://example.com/faculty --input raw_data.json
 ```
-**Step B: Transformation & Storage**
-Clean the raw JSON data and load it into the SQLite database:
+**Step B: Transformation**
+Clean the raw JSON data:
 ```bash
-python transformation.py
+./depipeline.sh transformation --input raw_data.json --output cleaned_data.json
+```
+**Step C: Storage**
+load the cleaned JSON data into the SQLite database
+```bash
+./depipeline.sh storage --output cleaned_data.json --db faculty_data.db
 ```
 **Step C: Serving (API)**
 Start the FastAPI server to expose the data:
 ```bash
-uvicorn api_server:app --reload
+./depipeline.sh serving --db faculty_data.db
 ```
 
 ## API Documentation
