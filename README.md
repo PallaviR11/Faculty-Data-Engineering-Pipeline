@@ -40,11 +40,14 @@ Follow these steps to set up the Faculty Data Engineering Pipeline on your local
   **On Ubuntu:**
   ```bash
   sudo apt update && sudo apt install curl -y
+  ```
 ### 2. Clone the Repository
 Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
 
 ```bash
 git clone https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git
+```
+```bash
 cd Faculty-Data-Engineering-Pipeline
 ```
 
@@ -54,11 +57,15 @@ It is recommended to use a virtual environment to isolate project dependencies.
 **On Windows:**
 ```bash
 python -m venv venv
+```
+```bash
 .\venv\Scripts\Activate.ps1
 ```
 **On Linux (Ubuntu) / macOS:**
 ```bash
 python3 -m venv venv
+```
+```bash
 source venv/bin/activate
 ```
 ### 4. Install Required Dependencies
