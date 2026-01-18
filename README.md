@@ -112,28 +112,28 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step A: Ingestion (Scraping)**
   Run the Scrapy spider to collect raw faculty data:
   ```bash
-  bash depipeline.sh ingestion \
+  ./depipeline.sh ingestion \
     --url https://www.daiict.ac.in/faculty \
     --input raw_data.json
   ```
   **Step B: Transformation**
   Clean the raw JSON data:
   ```bash
-  bash depipeline.sh transformation \
+  ./depipeline.sh transformation \
     --input raw_data.json \
     --output cleaned_data.json
   ```
   **Step C: Storage**
   load the cleaned JSON data into the SQLite database
   ```bash
-  bash depipeline.sh storage \
+  ./depipeline.sh storage \
     --output cleaned_data.json \
     --db faculty_data.db
   ```
   **Step D: Serving (API)**
   Start the FastAPI server to expose the data:
   ```bash
-  bash depipeline.sh serving \
+  ./depipeline.sh serving \
     --db faculty_data.db
   ```
 ## API Documentation
