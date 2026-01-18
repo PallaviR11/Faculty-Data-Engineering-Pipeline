@@ -45,15 +45,16 @@ cd Faculty-Data-Engineering-Pipeline
 
 ### 3. Create a Virtual Environment
 It is recommended to use a virtual environment to isolate project dependencies.
+
 **On Windows:**
-'''bash
+```bash
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-'''
+```
 **On Linux (Ubuntu) / macOS:**
-'''bash
+```bash
 python3 -m venv venv
-'''
+```
 ### 4. Install Required Dependencies
 ```bash
 pip install -r requirements.txt
@@ -61,29 +62,7 @@ pip install -r requirements.txt
 source venv/bin/activate
 
 ## Running the Pipeline
-You can run the **Faculty Data Engineering Pipeline** either as a single automated process or by executing each stage manually for development and testing.
-
-### 1. Automated Execution (Recommended)
-### 1. Automated Execution (Recommended)
-The orchestration scripts automate the entire ETL flow (**Ingestion** -> **Transformation** -> **Storage**) in a single command.
-
-* **On Windows (PowerShell):**
-    ```powershell
-    ./depipeline.ps1
-    ```
-   
-
-* **On Linux (Ubuntu) / macOS:**
-    ```bash
-    chmod +x depipeline.sh && ./depipeline.sh
-    ```
-Once the data is processed, launch the **FastAPI** server to begin serving the data:
-```bash
-uvicorn api_server:app --reload
-```
-
-### 2. Manual Stage-by-Stage Execution
-If you need to debug a specific part of the pipeline, you can run the stages individually.
+You can run the **Faculty Data Engineering Pipeline** by executing each stage manually for development and testing.
 
 **Step A: Ingestion (Scraping)**
 Run the Scrapy spider to collect raw faculty data:
