@@ -39,7 +39,7 @@ Ensure you have **Python 3.10+** installed on your system.
 Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
 
 ```bash
-git clone [https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git](https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git)
+git clone https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git
 cd Faculty-Data-Engineering-Pipeline
 ```
 
