@@ -54,38 +54,83 @@ python -m venv venv
 **On Linux (Ubuntu) / macOS:**
 ```bash
 python3 -m venv venv
+source venv/bin/activate
 ```
 ### 4. Install Required Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-source venv/bin/activate
-
 ## Running the Pipeline
-You can run the **Faculty Data Engineering Pipeline** by executing each stage manually for development and testing.
+You can execute the pipeline stage by stage using either Bash (.sh) or PowerShell (.ps1), depending on your operating system.
 
-**Step A: Ingestion (Scraping)**
-Run the Scrapy spider to collect raw faculty data:
-```bash
-cd faculty_scraper
-./depipeline.sh ingestion --url https://example.com/faculty --input raw_data.json
-```
-**Step B: Transformation**
-Clean the raw JSON data:
-```bash
-./depipeline.sh transformation --input raw_data.json --output cleaned_data.json
-```
-**Step C: Storage**
-load the cleaned JSON data into the SQLite database
-```bash
-./depipeline.sh storage --output cleaned_data.json --db faculty_data.db
-```
-**Step C: Serving (API)**
-Start the FastAPI server to expose the data:
-```bash
-./depipeline.sh serving --db faculty_data.db
-```
-
+* ### Running with PowerShell (depipeline.ps1)
+  *Windows only*
+  
+  **Allow script execution (once per session)**
+  ```bash
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  ```
+  **Step A: Ingestion (Scraping)**
+  Run the Scrapy spider to collect raw faculty data:
+  ```bash
+  .\depipeline.ps1 ingestion `
+    --url https://www.daiict.ac.in/faculty `
+    --input raw_data.json
+  ```
+  **Step B: Transformation**
+  Clean the raw JSON data:
+  ```bash
+  .\depipeline.ps1 transformation `
+    --input raw_data.json `
+    --output cleaned_data.json
+  ```
+  **Step C: Storage**
+  load the cleaned JSON data into the SQLite database
+  ```bash
+  .\depipeline.ps1 storage `
+    --output cleaned_data.json `
+    --db faculty_data.db
+  ```
+  **Step D: Serving (API)**
+  Start the FastAPI server to expose the data:
+  ```bash
+  .\depipeline.ps1 serving `
+    --db faculty_data.db
+  ```
+* ### Running with Bash (depipeline.sh)
+  *Linux / macOS / Git Bash / WSL*
+  
+  **Allow script execution (first time only)**
+  ```bash
+  chmod +x depipeline.sh
+  ```
+  **Step A: Ingestion (Scraping)**
+  Run the Scrapy spider to collect raw faculty data:
+  ```bash
+  bash depipeline.sh ingestion \
+    --url https://www.daiict.ac.in/faculty \
+    --input raw_data.json
+  ```
+  **Step B: Transformation**
+  Clean the raw JSON data:
+  ```bash
+  bash depipeline.sh transformation \
+    --input raw_data.json \
+    --output cleaned_data.json
+  ```
+  **Step C: Storage**
+  load the cleaned JSON data into the SQLite database
+  ```bash
+  bash depipeline.sh storage \
+    --output cleaned_data.json \
+    --db faculty_data.db
+  ```
+  **Step D: Serving (API)**
+  Start the FastAPI server to expose the data:
+  ```bash
+  bash depipeline.sh serving \
+    --db faculty_data.db
+  ```
 ## API Documentation
 Once the server is running, you can access the following endpoints:
 
@@ -105,11 +150,3 @@ Once the server is running, you can access the following endpoints:
   }
 ]
 ```
-
-## Linux Permissions
-Ensure the Bash script is executable if the automated command fails:
-```bash
-chmod +x depipeline.sh
-```
-## Database Lock
-If the database remains empty, ensure your transformation.py has finished processing the raw_data.json file completely before starting the API.
