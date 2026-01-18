@@ -180,7 +180,7 @@ switch ($STAGE) {
         # Verify that the target website is reachable before initiating the scraper.
         Write-Host "${CYAN}Checking website connectivity...${NC}"
         try {
-            Invoke-WebRequest -Uri $READ_URL -Method Head -ErrorAction Stop | Out-Null
+            Invoke-WebRequest -Uri $READ_URL -Method Head -UseBasicParsing -ErrorAction Stop | Out-Null
             Write-Host "${GREEN}The website is reachable.${NC}"
         } catch {
             Write-Host "${RED}Error: Cannot reach $READ_URL. Aborting the ingestion process.${NC}"
