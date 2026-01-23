@@ -76,7 +76,7 @@ pip install -r requirements.txt
 You can execute the pipeline stage by stage using either Bash (.sh) or PowerShell (.ps1), depending on your operating system.
 
 * ### Running with PowerShell (depipeline.ps1)
-  *Windows only*
+  *Windows*
   
   **Allow script execution (once per session)**
   ```bash
