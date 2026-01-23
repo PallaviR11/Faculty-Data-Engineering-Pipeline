@@ -59,7 +59,7 @@ def run_storage(input_file, db_path):
                 teaching = excluded.teaching,
                 research = excluded.research,
                 publications = excluded.publications,
-                biography = excluded.biography,
+                biography = excluded.biography
         """, (
             item.get('faculty_type'),
             item.get('name'),
