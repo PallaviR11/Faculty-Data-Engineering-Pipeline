@@ -12,18 +12,27 @@ def run_storage(input_file, db_path):
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Faculty (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            image_url TEXT,
+
+            -- Identity
+            faculty_type TEXT,
             name TEXT,
-            qualification TEXT,
-            phone TEXT,
-            address TEXT,
+
+            -- Contact information
             email TEXT,
+            phone TEXT,
             professional_link TEXT,
-            biography TEXT,
+            address TEXT,
+
+            -- Academic profile
+            qualification TEXT,
             specialization TEXT,
-            publications TEXT,
             teaching TEXT,
             research TEXT,
+            publications TEXT,
+
+            -- Long free-text
+            biography TEXT,
+
             UNIQUE(name, phone)
         )
     """)
@@ -35,34 +44,35 @@ def run_storage(input_file, db_path):
         for item in data:
             cursor.execute("""
                 INSERT INTO Faculty (
-                    image_url, name, qualification, phone, address, 
-                    email, professional_link, biography, specialization, 
-                    publications, teaching, research
+                    faculty_type, name, email, phone, professional_link, 
+                    address, qualification, specialization, teaching,
+                    research, publications, biography
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(name, phone) DO UPDATE SET
-                image_url = excluded.image_url,
-                qualification = excluded.qualification,
-                address = excluded.address,
+                faculty_type = excluded.faculty_type,
                 email = excluded.email,
-                biography = excluded.biography,
+                professional_link = excluded.professional_link,
+                address = excluded.address,
+                qualification = excluded.qualification,
                 specialization = excluded.specialization,
-                publications = excluded.publications,
                 teaching = excluded.teaching,
-                research = excluded.research
+                research = excluded.research,
+                publications = excluded.publications,
+                biography = excluded.biography,
         """, (
-            item.get('image_url'),
+            item.get('faculty_type'),
             item.get('name'),
-            item.get('qualification'),
-            item.get('phone'),
-            item.get('address'),
             item.get('email'),
+            item.get('phone'),
             item.get('professional_link'),
-            item.get('biography'),
+            item.get('address'),
+            item.get('qualification'),
             item.get('specialization'),
-            item.get('publications'),
             item.get('teaching'),
-            item.get('research')
+            item.get('research'),
+            item.get('publications'),
+            item.get('biography')
         ))
         
         conn.commit()
