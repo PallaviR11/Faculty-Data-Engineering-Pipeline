@@ -83,6 +83,7 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
   ```
   **Step A: Ingestion (Scraping)**
+  
   Run the Scrapy spider to collect raw faculty data:
   ```bash
   .\depipeline.ps1 ingestion `
@@ -90,6 +91,7 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
     --input raw_data.json
   ```
   **Step B: Transformation**
+
   Clean the raw JSON data:
   ```bash
   .\depipeline.ps1 transformation `
@@ -97,6 +99,7 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
     --output cleaned_data.json
   ```
   **Step C: Storage**
+  
   load the cleaned JSON data into the SQLite database
   ```bash
   .\depipeline.ps1 storage `
@@ -104,6 +107,7 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
     --db faculty_data.db
   ```
   **Step D: Serving (API)**
+  
   Start the FastAPI server to expose the data:
   ```bash
   .\depipeline.ps1 serving `
