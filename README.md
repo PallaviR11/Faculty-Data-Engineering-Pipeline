@@ -2,7 +2,7 @@
 
 A complete end-to-end data engineering project designed to scrape faculty information, clean and transform the data, store it in a local database, and serve it via a FastAPI endpoint. This project is built to be cross-platform, running seamlessly on **Windows**, **Linux (Ubuntu)**, and **macOS**.
 
-![Faculty Data Engineering Pipeline ETL Process](pipelineflow.png)
+![Faculty Data Engineering Pipeline ETL Process](pipelineFlow.png)
 
 ## Features
 * **Automated Scraping:** Uses **Scrapy** to extract faculty details from web sources.
