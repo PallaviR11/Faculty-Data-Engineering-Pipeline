@@ -28,9 +28,9 @@ def run_storage(input_file, db_path):
             specialization TEXT,
             teaching TEXT,
             research TEXT,
-            publications TEXT,
 
             -- Long free-text
+            publications TEXT,
             biography TEXT,
 
             UNIQUE(name, phone)
