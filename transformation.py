@@ -1,7 +1,4 @@
-import json
-import re
-import os
-import argparse
+import json, re, os, argparse
 
 def run_transformation(raw_file, clean_file):
     print(f"Processing raw JSON data from {raw_file}...")
@@ -18,8 +15,6 @@ def run_transformation(raw_file, clean_file):
             return
 
     transformed_data = []
-    content_fields = ["qualification", "biography", "specialization", "publications", "teaching", "research"]
-
     for item in data:
         # Collapse all whitespace and title-case the name
         cleaned = {k: " ".join(str(v).split()) if v else None for k, v in item.items()}
