@@ -11,6 +11,13 @@ A complete end-to-end data engineering project designed to scrape faculty inform
 * **API Access:** Provides a **FastAPI** server to query and retrieve faculty data via REST endpoints.
 * **Cross-Platform Orchestration**: Includes shell scripts (`.sh` for Linux/macOS and `.ps1` for Windows) to automate the entire pipeline.
 
+## Pipeline Execution Flow
+The project is structured into four distinct stages:
+* **Ingestion:** Scrapy spiders extract raw data from faculty web pages.
+* **Transformation:** Python logic cleans and normalizes the raw data.
+* **Storage:** The structured data is loaded into a local SQLite database.
+* **Serving:** A FastAPI server exposes the data via REST endpoints.
+
 ## Project Structure
 ```text
 ├── faculty_scraper/          # Scrapy project root
@@ -20,28 +27,23 @@ A complete end-to-end data engineering project designed to scrape faculty inform
 │   │   └── faculty_spider.py # Core web scraping logic
 │   ├── items.py              # Scraped data containers
 │   ├── middlewares.py        # Request/Response processing
-│   ├── pipelines.py          # Post-scrape item processing
+│   ├── pipelines.py          # Default (empty) pipelines
 │   └── settings.py           # Project configurations
-├── logs/                     # LLM Usage and Audit logs
-│   └── llm_usage.md          # Record of AI interactions (Policy compliance)
-├── transformation.py         # Standalone: Cleans raw JSON and removes HTML noise
-├── storage.py                # Standalone: Loads cleaned JSON into SQLite database
+├── logs/                     # Audit logs
+│   └── llm_usage.md          # AI interaction records
+├── transformation.py         # Cleans raw JSON and removes HTML noise
+├── storage.py                # Loads cleaned JSON into SQLite database
 ├── api_server.py             # FastAPI: Serves processed data via REST endpoints
 ├── depipeline.sh             # Linux/macOS: Pipeline orchestration script
 ├── depipeline.ps1            # Windows: Pipeline orchestration script
-├── requirements.txt          # Project dependency list for environment setup
-├── scrapy.cfg                # Scrapy config (required for execution)
+├── requirements.txt          # Project dependencies
+├── scrapy.cfg                # Scrapy configuration
 ├── pipeline_flow.png         # Visual architecture diagram
-├── README.md                 # Main project documentation and setup guide
+├── README.md                 # Project documentation
 └── .gitignore                # Excludes local data and virtual environments
 ```
-
-## Pipeline Execution Flow
-The project is structured into four distinct stages:
-* **Ingestion:** Scrapy spiders extract raw data from faculty web pages.
-* **Transformation:** Python logic cleans and normalizes the raw data.
-* **Storage:** The structured data is loaded into a local SQLite database.
-* **Serving:** A FastAPI server exposes the data via REST endpoints.
+> Note: Although the project includes a default `pipelines.py` file, the Transformation and Storage stages are implemented as separate standalone scripts (`transformation.py` and `storage.py`).  
+> This allows users to run, modify, or debug each stage independently, giving full control over data cleaning and database loading.
 
 ## Installation & Setup
 Follow these steps to set up the Faculty Data Engineering Pipeline on your local machine.
@@ -164,9 +166,9 @@ Once the server is running, you can access the following endpoints:
 
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
-| `/` | `GET` | Root endpoint showing API status and welcome message. |
-| `/faculty/all` | `GET` | Returns a list of all scraped faculty members in the database. |
-| `/docs` | `GET` | Interactive Swagger UI documentation for testing endpoints. |
+| `/` | `GET` | Root endpoint showing API status |
+| `/faculty/all` | `GET` | Returns all faculty members in the database. |
+| `/docs` | `GET` | Interactive Swagger UI for testing. |
 
 **Example Response (`/faculty/all`):**
 ```json
@@ -209,14 +211,53 @@ The table below defines the schema for the `Faculty` database and describes the 
 | **publications** | TEXT | Academic citations and papers. | Intensive cleaning to collapse whitespace and remove **HTML noise/fragments**. |
 | **biography** | TEXT | Professional summary/biography. | Joined multiple paragraph fragments into a single continuous block. |
 
+## Data Transformation
+
+- Validates raw JSON input existence.  
+- Flattens list-type fields into strings.  
+- Normalizes text and removes HTML noise.  
+- Handles missing values:  
+  - Placeholder text for content-related fields.  
+  - null for other fields.  
+- Standardizes fields:  
+  - Names → Title Case.  
+  - Faculty type → hyphens replaced by spaces, Title Case.  
+- Writes output to cleaned_data.json.  
+
+## Data Storage
+
+The storage stage persists the cleaned faculty data into a relational SQLite database.
+
+- Validates cleaned JSON input.  
+- Initializes SQLite database and creates `Faculty` table if missing.  
+- Loads cleaned data using batch `INSERT OR IGNORE` for efficiency.  
+- Commits all inserts in a single transaction to ensure consistency.  
+
+## Dependencies
+
+- Scrapy – Web scraping and crawling.  
+- Requests – Auxiliary HTTP requests.  
+- FastAPI – REST API server.  
+- Uvicorn – ASGI server for FastAPI.  
+- Pydantic – Data validation and schema enforcement.  
+
+## Pipeline Orchestration Scripts
+
+- depipeline.ps1 (Windows / PowerShell)  
+- depipeline.sh (Linux / macOS / Bash)  
+
+### Supported Stages:
+
+- ingestion – Scrapy spider to fetch raw JSON.  
+- transformation – Clean and normalize data (transformation.py).  
+- storage – Load into SQLite (storage.py).  
+- serving – Start FastAPI application.  
+
+This separation allows users to run, modify, or debug each stage independently.  
+
 ## Future Enhancements
 
-The current architecture of the pipeline allows for several high-value enhancements to increase its scale and utility:
-
-* **Cross-Institutional Scalability & Automated Discovery**: The pipeline can be evolved into a comprehensive academic data engine. This would involve implementing an "automated discovery" layer capable of identifying faculty directory structures across a wide range of public and private research institutes. By developing generalized parsing logic, the system can map varying website architectures into the unified `Faculty` schema, enabling the ingestion of thousands of professional profiles through a single orchestration command.
-
-* **Advanced Search & Semantic Filtering**: The FastAPI serving layer can be enhanced with complex query parameters. This would allow users to perform targeted searches—such as filtering by specific research interests, departments, or academic rankings—rather than retrieving the entire dataset.
-
-* **Analytical Dashboard Integration**: A visualization layer (using tools like Streamlit or React) can be integrated to provide a frontend dashboard. This would transform the SQLite data into interactive charts and maps, revealing trends in research density and faculty demographics across the academic landscape.
-
-* **Automated Sync & Change Detection**: To maintain data integrity, the pipeline can be integrated with a scheduling service (such as GitHub Actions or Cron). This would allow for periodic, automated crawls and "change detection" logic to ensure the database stays synchronized with real-time updates on faculty websites.
+- Cross-Institutional Scalability: Generalize parsing for multiple universities.  
+- Advanced Search & Filtering: Enable queries by department, research, or ranking.  
+- Analytical Dashboard: Visualize faculty trends using Streamlit or React.  
+- Automated Sync & Change Detection: Schedule periodic crawls with GitHub Actions or Cron. 
