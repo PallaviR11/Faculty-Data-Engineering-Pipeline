@@ -13,15 +13,27 @@ A complete end-to-end data engineering project designed to scrape faculty inform
 
 ## Project Structure
 ```text
-├── faculty_scraper/     # Scrapy project folder (Spider logic)
-├── transformation.py    # Data cleaning and transformation script
-├── storage.py           # SQLite database management logic
-├── api_server.py        # FastAPI server implementation
-├── depipeline.sh        # Linux/macOS Bash orchestration script
-├── depipeline.ps1       # Windows PowerShell orchestration script
-├── requirements.txt     # Project dependencies
-├── scrapy.cfg           # Scrapy configuration file (Essential for execution)
-└── .gitignore           # Configuration to exclude local data and environments
+├── faculty_scraper/          # Scrapy project root
+│   ├── __init__.py           # Package initialization
+│   ├── spiders/              # Crawler directory
+│   │   ├── __init__.py       # Package initialization
+│   │   └── faculty_spider.py # Core web scraping logic
+│   ├── items.py              # Scraped data containers
+│   ├── middlewares.py        # Request/Response processing
+│   ├── pipelines.py          # Post-scrape item processing
+│   └── settings.py           # Project configurations
+├── logs/                     # LLM Usage and Audit logs
+│   └── llm_usage.md          # Record of AI interactions (Policy compliance)
+├── transformation.py         # Standalone: Cleans raw JSON and removes HTML noise
+├── storage.py                # Standalone: Loads cleaned JSON into SQLite database
+├── api_server.py             # FastAPI: Serves processed data via REST endpoints
+├── depipeline.sh             # Linux/macOS: Pipeline orchestration script
+├── depipeline.ps1            # Windows: Pipeline orchestration script
+├── requirements.txt          # Project dependency list for environment setup
+├── scrapy.cfg                # Scrapy config (required for execution)
+├── pipeline_flow.png         # Visual architecture diagram
+├── README.md                 # Main project documentation and setup guide
+└── .gitignore                # Excludes local data and virtual environments
 ```
 
 ## Pipeline Execution Flow
