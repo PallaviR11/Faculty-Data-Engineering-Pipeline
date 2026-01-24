@@ -29,6 +29,10 @@ def run_transformation(raw_file, clean_file):
                 val_str = ", ".join([str(i).strip() for i in v if i])
             else:
                 val_str = str(v) if v else ""
+                
+            # Remove escaped quotes, fix double commas, and normalize spacing to clean HTML noise
+            val_str = val_str.replace('\\"', '"').replace(',,', ',')
+            val_str = val_str.replace(' , ', ', ').replace(' ,', ',')
 
             # 2. Advanced cleaning: Collapse whitespace and remove stray leading/trailing commas
             val_str = " ".join(val_str.split()).strip().strip(',').strip() # Added extra .strip() at the end
