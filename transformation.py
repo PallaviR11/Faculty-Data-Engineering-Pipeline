@@ -47,7 +47,7 @@ def run_transformation(raw_file, clean_file):
                 if cleaned.get('faculty_type'): 
                     cleaned['faculty_type'] = cleaned['faculty_type'].replace("-", " ").title()
 
-                transformed_data.append(cleaned)
+        transformed_data.append(cleaned)
 
     with open(clean_file, 'w', encoding='utf-8') as f:
         json.dump(transformed_data, f, indent=4)
