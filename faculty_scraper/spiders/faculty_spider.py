@@ -13,19 +13,18 @@ class FacultySpider(scrapy.Spider):
         "https://www.daiict.ac.in/professor-practice"
     ]
 
-    def clean_list(self, values):
-        """Helper to remove empty strings and whitespace from list of strings"""
-        return [v.strip() for v in values if v and v.strip()]
-
     def parse(self, response):
         """
         Parse the main faculty listing pages
         """
-        # Select the list items containing faculty info
+        # 1. Determine the type of each page
+        raw_type = response.url.strip('/').split('/')[-1].replace("-", " ").title()
+
+        # 2. Select the faculty cards
         faculty_cards = response.css("div.facultyInformation ul li")
 
         for faculty in faculty_cards:
-            # Combined selector to handle different class name variations on the site
+            # 3. Extract basic info from the card
             profile_link = faculty.css(
                 "div.personalDetails h3 a::attr(href), "
                 "div.personalDetail h3 a::attr(href), "
@@ -39,12 +38,13 @@ class FacultySpider(scrapy.Spider):
             ).get()
 
             if profile_link:
+                # 4. Pass EVERYTHING to the next stage in one meta backpack
                 yield response.follow(
                     profile_link,
                     callback=self.parse_faculty_profile,
                     meta={
-                        "name": name.strip() if name else "Unknown", 
-                        "profile_url": response.urljoin(profile_link)
+                        "name": name.strip() if name else "Unknown",
+                        "faculty_type": raw_type
                     }
                 )
 
@@ -58,18 +58,18 @@ class FacultySpider(scrapy.Spider):
 
         # Contact information
         item['email'] = response.css("div.field--name-field-email.field__items .field__item::text").getall()
-        item['phone'] = response.css("div.field--name-field-contact-no.field__item::text").get()
+        item['phone'] = response.css("div.field--name-field-contact-no.field__item::text").getall()
         item['professional_link'] = response.url
         item['address'] = response.css("div.field--name-field-address.field__item::text").getall()
 
         # Academic profile
         item['qualification'] = response.css("div.field--name-field-faculty-name.field__item::text").get()
-        item['specialization'] = response.css("div.work-exp p::text").getall()
+        item['specialization'] = response.css("div.work-exp p ::text").getall()
         item['teaching'] = response.css("div.field--name-field-teaching.field__item li::text").getall()
         item['research'] = response.css("div.field--name-field-faculty-teaching.field__item ::text").getall()
-        item['publications'] = response.css("div.education ul li ::text").getall()
 
         # Long free-text
+        item['publications'] = response.css("div.education ul li ::text").getall()
         item['biography'] = response.css("div.field--name-field-biography.field__item p::text").getall()
 
         yield item
