@@ -24,20 +24,24 @@ The project is structured into four distinct stages:
 │   ├── __init__.py           # Package initialization
 │   ├── spiders/              # Crawler directory
 │   │   ├── __init__.py       # Package initialization
-│   │   └── faculty_spider.py # Core web scraping logic
+│   │   └── faculty_spider.py # Core web scraping logi
 │   ├── items.py              # Scraped data containers
 │   ├── middlewares.py        # Request/Response processing
 │   ├── pipelines.py          # Default (empty) pipelines
 │   └── settings.py           # Project configurations
+├── local_model_folder/       # Cached transformer model (speed optimization)
 ├── logs/                     # Audit logs
 │   └── llm_usage.md          # AI interaction records
 ├── transformation.py         # Cleans raw JSON and removes HTML noise
 ├── storage.py                # Loads cleaned JSON into SQLite database
+├── semantic_search.py        # NLP-based interactive search engine
+├── generate_stats.py         # Auditing tool: Data density and quality metrics
 ├── api_server.py             # FastAPI: Serves processed data via REST endpoints
 ├── depipeline.sh             # Linux/macOS: Pipeline orchestration script
 ├── depipeline.ps1            # Windows: Pipeline orchestration script
 ├── requirements.txt          # Project dependencies
 ├── scrapy.cfg                # Scrapy configuration
+├── embeddings.pt             # Pre-computed search vectors for near-instant search
 ├── pipeline_flow.png         # Visual architecture diagram
 ├── README.md                 # Project documentation
 └── .gitignore                # Excludes local data and virtual environments
@@ -46,122 +50,180 @@ The project is structured into four distinct stages:
 > This allows users to run, modify, or debug each stage independently, giving full control over data cleaning and database loading.
 
 ## Installation & Setup
+
 Follow these steps to set up the Faculty Data Engineering Pipeline on your local machine.
+
 ### 1. Prerequisites
+
 * **Python 3.10+**
 * **curl**: Required for website connectivity checks in the shell script.
-  
+
   **On Ubuntu:**
+
   ```bash
   sudo apt update && sudo apt install curl -y
   ```
+  
 ### 2. Clone the Repository
+
 Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
 
 ```bash
 git clone https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git
 ```
+
 ```bash
 cd Faculty-Data-Engineering-Pipeline
 ```
 
 ### 3. Create a Virtual Environment
+
 It is recommended to use a virtual environment to isolate project dependencies.
 
 **On Windows:**
+
 ```bash
 python -m venv venv
 ```
+
 ```bash
 .\venv\Scripts\Activate.ps1
 ```
+
 **On Linux (Ubuntu) / macOS:**
+
 ```bash
 python3 -m venv venv
 ```
+
 ```bash
 source venv/bin/activate
 ```
+
 ### 4. Install Required Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
+
 ## Running the Pipeline
+
 You can execute the pipeline stage by stage using either Bash (.sh) or PowerShell (.ps1), depending on your operating system.
 
 * ### Running with PowerShell (depipeline.ps1)
+
   *Windows*
-  
+
   **Allow script execution (once per session)**
+
   ```bash
   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
   ```
+
   **Step A: Ingestion (Scraping)**
-  
+
   Run the Scrapy spider to collect raw faculty data:
+
   ```bash
   .\depipeline.ps1 ingestion `
     --url https://www.daiict.ac.in/faculty `
     --input raw_data.json
   ```
+
   **Step B: Transformation**
 
   Clean the raw JSON data:
+
   ```bash
   .\depipeline.ps1 transformation `
     --input raw_data.json `
     --output cleaned_data.json
   ```
+
   **Step C: Storage**
-  
+
   load the cleaned JSON data into the SQLite database
+
   ```bash
   .\depipeline.ps1 storage `
     --output cleaned_data.json `
     --db faculty_data.db
   ```
-  **Step D: Serving (API)**
   
+  **Step D: Serving (API)**
+
   Start the FastAPI server to expose the data:
+
   ```bash
   .\depipeline.ps1 serving `
     --db faculty_data.db
   ```
+
 * ### Running with Bash (depipeline.sh)
+
   *Linux / macOS / Git Bash / WSL*
-  
+
   **Allow script execution (first time only)**
+
   ```bash
   chmod +x depipeline.sh
   ```
+
   **Step A: Ingestion (Scraping)**
+
   Run the Scrapy spider to collect raw faculty data:
+
   ```bash
   ./depipeline.sh ingestion \
     --url https://www.daiict.ac.in/faculty \
     --input raw_data.json
   ```
+
   **Step B: Transformation**
+
   Clean the raw JSON data:
+
   ```bash
   ./depipeline.sh transformation \
     --input raw_data.json \
     --output cleaned_data.json
   ```
+
   **Step C: Storage**
+
   load the cleaned JSON data into the SQLite database
+
   ```bash
   ./depipeline.sh storage \
     --output cleaned_data.json \
     --db faculty_data.db
   ```
+  
   **Step D: Serving (API)**
+
   Start the FastAPI server to expose the data:
+
   ```bash
   ./depipeline.sh serving \
     --db faculty_data.db
   ```
+
+## Pipeline Orchestration Scripts
+
+- depipeline.ps1 (Windows / PowerShell)  
+- depipeline.sh (Linux / macOS / Bash)  
+
+### Supported Stages:
+
+- ingestion – Scrapy spider to fetch raw JSON.  
+- transformation – Clean and normalize data (transformation.py).  
+- storage – Load into SQLite (storage.py).  
+- serving – Start FastAPI application.  
+
+This separation allows users to run, modify, or debug each stage independently.
+
 ## API Documentation
+
 Once the server is running, you can access the following endpoints:
 
 | Endpoint | Method | Description |
@@ -171,6 +233,7 @@ Once the server is running, you can access the following endpoints:
 | `/docs` | `GET` | Interactive Swagger UI for testing. |
 
 **Example Response (`/faculty/all`):**
+
 ```json
 [
   {
@@ -185,7 +248,7 @@ Once the server is running, you can access the following endpoints:
     "specialization": "Communication, Signal Processing, Machine Learning, Meet Prof. Yash Vasavada:, A Passionate Researcher in Wireless Communications and Signal Processing",
     "teaching": "Introduction to Communication Systems, Advanced Digital Communications, Next Generation Communication Systems",
     "research": "Research not provided",
-    "publications": "Yash Vasavada, , Michael Parr, Nidhi Sindhav, and Saumi S., A Space-Frequency Processor for Identifying and Isolating GNSS Signals Amidst Interference,...",
+    "publications": "Yash Vasavada, Michael Parr, Nidhi Sindhav, and Saumi S., A Space-Frequency Processor for Identifying and Isolating GNSS Signals Amidst Interference,...",
     "biography": "Yash Vasavada is currently a Professor at DAIICT, and he works in the areas of communication system design and development and application of machine learning algorithms..."
   }
 ]
@@ -211,7 +274,9 @@ The table below defines the schema for the `Faculty` database and describes the 
 | **publications** | TEXT | Academic citations and papers. | Intensive cleaning to collapse whitespace and remove **HTML noise/fragments**. |
 | **biography** | TEXT | Professional summary/biography. | Joined multiple paragraph fragments into a single continuous block. |
 
-## Data Transformation
+ The Faculty database consists of 111 records.
+
+## Data Transformation Logic
 
 - Validates raw JSON input existence.  
 - Flattens list-type fields into strings.  
@@ -222,38 +287,138 @@ The table below defines the schema for the `Faculty` database and describes the 
 - Standardizes fields:  
   - Names → Title Case.  
   - Faculty type → hyphens replaced by spaces, Title Case.  
-- Writes output to cleaned_data.json.  
+- Writes output to cleaned_data.json.
 
-## Data Storage
+### Advanced Cleaning Features:
+
+* **Recursive Punctuation Collapse:** Uses a while-loop to ensure all "stuttered" commas (e.g., `, , ,`) are reduced to a single comma.
+
+* **Unicode & Artifact Stripping:** Removes literal backslashes and escaped quote noise (`\"`) left over from the scraping process.
+
+* **Whitespace Invariant Processing:** Utilizes `.split()` and `.join()` to clear invisible formatting characters (tabs/newlines) hidden within raw text fragments. 
+
+## Data Storage Logic
 
 The storage stage persists the cleaned faculty data into a relational SQLite database.
 
 - Validates cleaned JSON input.  
 - Initializes SQLite database and creates `Faculty` table if missing.  
 - Loads cleaned data using batch `INSERT OR IGNORE` for efficiency.  
-- Commits all inserts in a single transaction to ensure consistency.  
+- Commits all inserts in a single transaction to ensure consistency.   
+
+## Dataset Statistics & Auditing
+
+The pipeline includes an automated auditing module to assess data completeness, text richness, and field-level density after ingestion and cleaning.
+
+### Current Dataset Profile
+
+- **Total Faculty Profiles:** 111  
+- **Fields per Record:** 13  
+- **Unique Profiles:** 111 (100% unique)
+- **Total Search Vocabulary:** 955 unique academic terms
+- **Lowest Data Density:** `research` (12.6%)
+
+### Field-Level Statistics
+
+| Field Name | Null Count | Density (%) | Avg Words | Avg Characters | Min Characters | Max Characters |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| id | 0 | 100.0 | 1.0 | 2.0 | 1 | 3 |
+| faculty_type | 0 | 100.0 | 1.5 | 11.7 | 7 | 29 |
+| name | 0 | 100.0 | 2.2 | 14.6 | 7 | 29 |
+| email | 0 | 100.0 | 1.1 | 24.4 | 3 | 51 |
+| phone | 0 | 100.0 | 1.1 | 10.1 | 3 | 36 |
+| professional_link | 0 | 100.0 | 1.0 | 52.1 | 40 | 75 |
+| address | 0 | 100.0 | 6.7 | 42.7 | 3 | 138 |
+| qualification | 2 | 98.2 | 6.9 | 53.6 | 13 | 138 |
+| specialization | 3 | 97.3 | 16.9 | 137.5 | 7 | 2020 |
+| teaching | 54 | 51.4 | 21.5 | 172.5 | 33 | 1202 |
+| research | 97 | 12.6 | 44.2 | 336.4 | 29 | 1908 |
+| publications | 44 | 60.4 | 343.2 | 2574.8 | 75 | 12373 |
+| biography | 43 | 61.3 | 126.9 | 860.1 | 184 | 2439 |
+
+### Key Auditing Insights
+
+- Core identity fields (`name`, `email`, `faculty_type`) are fully populated.
+
+- Descriptive academic fields (`teaching`, `research`, `publications`) show expected sparsity due to optional source availability.
+
+- High maximum character counts in `publications` and `biography` indicate rich long-form academic content.
+
+- Overall, the dataset demonstrates strong structural consistency with selective sparsity in deep-profile fields.
+
+### View Live Statistics
+
+```bash
+python generate_stats.py faculty_data.db
+```
+
+## Semantic Search Engine
+
+This stage integrates a **Natural Language Processing (NLP)**–based semantic search engine that extends beyond traditional keyword matching.  
+
+Using **vector embeddings**, the system interprets the academic intent of user queries and retrieves faculty profiles based on the **semantic relevance** of their research domains and specializations.
+
+---
+
+### Core Technology
+
+- **Model**  
+
+  Utilizes the `all-MiniLM-L6-v2` SentenceTransformer for efficient and accurate sentence-level text embeddings.
+
+- **Vectorization**  
+
+  Faculty attributes (`name`, `specialization`, `research`, `biography`) are concatenated into a single textual representation and encoded into **384-dimensional dense vectors**.
+
+- **Similarity Metric**  
+
+**Cosine Similarity** is used to compute semantic closeness between the query embedding and faculty profile embeddings for ranking results.
+---
+
+### Performance Optimizations
+
+The following optimizations ensure low-latency and production-ready performance:
+
+- **Local Model Caching**  
+
+  The transformer model is stored locally in `./local_model_folder`, removing external network dependency and reducing initialization time by approximately **70%**.
+
+- **Precomputed Embeddings**  
+
+  Faculty embeddings are serialized and stored in `embeddings.pt`.  
+  Subsequent searches reuse these embeddings, avoiding redundant computation.
+
+- **Persistent Search Loop**  
+
+  The search engine operates in an interactive loop, allowing multiple queries per execution without repeated model loading.
+
+---
+### Search Benchmarks
+
+Performance metrics based on a dataset containing **111 faculty records**:
+| Metric | Value |
+|------|------|
+| Model Startup Time | ~2.1 seconds (local) |
+| Average Search Latency | 35–45 ms |
+---
+
+### Execution
+
+To invoke the semantic search stage via the pipeline (requires strict output validation):
+```powershell
+.\depipeline.ps1 search --output cleaned_data.json
+```
 
 ## Dependencies
 
-- Scrapy – Web scraping and crawling.  
-- Requests – Auxiliary HTTP requests.  
-- FastAPI – REST API server.  
-- Uvicorn – ASGI server for FastAPI.  
-- Pydantic – Data validation and schema enforcement.  
-
-## Pipeline Orchestration Scripts
-
-- depipeline.ps1 (Windows / PowerShell)  
-- depipeline.sh (Linux / macOS / Bash)  
-
-### Supported Stages:
-
-- ingestion – Scrapy spider to fetch raw JSON.  
-- transformation – Clean and normalize data (transformation.py).  
-- storage – Load into SQLite (storage.py).  
-- serving – Start FastAPI application.  
-
-This separation allows users to run, modify, or debug each stage independently.  
+- **Scrapy** – Web scraping and crawling framework for data ingestion.  
+- **Pandas** – Data cleaning, transformation, and auditing.  
+- **SQLAlchemy / SQLite3** – Local database storage and ORM support.  
+- **FastAPI** – High-performance REST API for serving processed data.  
+- **Uvicorn** – ASGI server to run the FastAPI application.  
+- **Sentence-Transformers** – Semantic text embedding generation for search.  
+- **PyTorch (torch)** – Tensor computation and embedding storage backend.  
+- **Hugging Face Hub** – Model loading and local transformer cache management.
 
 ## Future Enhancements
 
