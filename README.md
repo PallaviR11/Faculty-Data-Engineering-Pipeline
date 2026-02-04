@@ -1,5 +1,11 @@
 # Faculty Data Engineering Pipeline
 
+## Author
+- **Name:** Pallavi Raghuvanshi  
+- **Roll No:** 202518026
+- **Program:** Msc Data Science 
+- **Institution:** DAIICT, Gandhinagar
+
 A complete end-to-end data engineering project designed to scrape faculty information, clean and transform the data, store it in a local database, and serve it via a FastAPI endpoint. This project is built to be cross-platform, running seamlessly on **Windows**, **Linux (Ubuntu)**, and **macOS**.
 
 ![Faculty Data Engineering Pipeline ETL Process](pipelineFlow.png)
@@ -24,7 +30,7 @@ The project is structured into four distinct stages:
 │   ├── __init__.py           # Package initialization
 │   ├── spiders/              # Crawler directory
 │   │   ├── __init__.py       # Package initialization
-│   │   └── faculty_spider.py # Core web scraping logi
+│   │   └── faculty_spider.py # Core web scraping logic
 │   ├── items.py              # Scraped data containers
 │   ├── middlewares.py        # Request/Response processing
 │   ├── pipelines.py          # Default (empty) pipelines
