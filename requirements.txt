@@ -1,5 +1,16 @@
+# Web scraping
 scrapy>=2.10
+requests>=2.31
+
+# Data processing & storage
+pandas>=2.0
+sqlalchemy>=2.0
+
+# API layer
 fastapi>=0.100
 uvicorn>=0.22
 pydantic>=1.10
-requests>=2.31
+
+# Semantic search & ML
+sentence-transformers>=2.2
+torch>=2.0
