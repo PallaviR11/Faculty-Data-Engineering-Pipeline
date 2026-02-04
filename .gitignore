@@ -16,6 +16,12 @@ raw_data.json
 cleaned_data.json
 exported_data.json
 *.db
+# Exclude pre-computed vector tensors for the search engine
+embeddings.pt
+
+# ===== AI & Local Model Cache =====
+# Exclude the large transformer model weights folder
+local_model_folder/
 
 # ===== OS files =====
 .DS_Store
