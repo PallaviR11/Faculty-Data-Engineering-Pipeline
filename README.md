@@ -410,9 +410,16 @@ Performance metrics based on a dataset containing **111 faculty records**:
 
 ### Execution
 
-To invoke the semantic search stage via the pipeline (requires strict output validation):
+To invoke the semantic search stage via the pipeline:
+
+**PowerShell (Windows)**
 ```powershell
 .\depipeline.ps1 search --output cleaned_data.json
+```
+
+**Bash (Linux / macOS)**
+```bash
+./depipeline.sh search --output cleaned_data.json
 ```
 
 ## Dependencies
