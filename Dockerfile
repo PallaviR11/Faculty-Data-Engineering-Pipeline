@@ -29,4 +29,5 @@ EXPOSE 8000
 EXPOSE 8501
 
 # The start command (we will override this in Render)
-CMD ["python", "api_server.py"]
+
+CMD ["uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "10000"]
