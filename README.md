@@ -52,7 +52,12 @@ The project is structured into four distinct stages:
 ├── pipelineFlow.png         # Visual architecture diagram
 ├── app.py                    # Main application
 ├── style.css                 # Your custom theme
+├── faculty_data.db           # SQLite: Final relational storage for API & Search
+├── embeddings.pt             # PyTorch: Pre-computed vectors for semantic search
+├── cleaned_data.json         # JSON: Standardized and cleaned faculty data
+├── raw_data.json             # JSON: Original data as extracted by Scrapy
 ├── README.md                 # Project documentation
+├── .dockerignore             # Excludes local venv and cache from the build
 └── .gitignore                # Excludes local data and virtual environments
 ```
 > Note: Although the project includes a default `pipelines.py` file, the Transformation and Storage stages are implemented as separate standalone scripts (`transformation.py` and `storage.py`).  
@@ -211,6 +216,15 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   ```bash
   streamlit run app.py
   ```
+
+## Deployment & Containerization
+The project is containerized with Docker to ensure the pipeline runs identically on any system and is ready for cloud deployment.
+
+- **Dockerfile**: Defines the environment and pre-caches the NLP model to ensure fast startup on Render.
+
+- **Docker Compose**: Orchestrates the FastAPI and Streamlit services to work together with a single command: docker-compose up --build.
+
+- **Data Persistence**: The GitHub repository includes faculty_data.db and embeddings.pt so the app is functional immediately upon deployment.
   
 ## Pipeline Orchestration Scripts
 
@@ -378,6 +392,7 @@ Using **vector embeddings**, the system interprets the academic intent of user q
 - **Similarity Metric**  
 
 **Cosine Similarity** is used to compute semantic closeness between the query embedding and faculty profile embeddings for ranking results.
+
 ---
 
 ### Performance Optimizations
