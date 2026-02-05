@@ -1,0 +1,18 @@
+# Environments
+venv/
+new_venv/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git/
+.gitignore
+
+# Local logs/temp
+logs/
+.DS_Store
