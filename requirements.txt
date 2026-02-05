@@ -1,4 +1,7 @@
-# Web scraping
+# Web Framework & Theme
+streamlit>=1.25.0
+
+# Scraping & Connectivity
 scrapy>=2.10
 requests>=2.31
 
