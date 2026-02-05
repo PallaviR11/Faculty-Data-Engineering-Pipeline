@@ -8,6 +8,14 @@
 
 A complete end-to-end data engineering project designed to scrape faculty information, clean and transform the data, store it in a local database, and serve it via a FastAPI endpoint. This project is built to be cross-platform, running seamlessly on **Windows**, **Linux (Ubuntu)**, and **macOS**.
 
+## Live Project Links
+
+Explore the different layers of the pipeline using the links below:
+
+* **[Interactive Research Portal](https://faculty-ui-yourlink.onrender.com)** – A user-friendly Streamlit interface for semantic faculty discovery.
+* **[FastAPI Documentation](https://faculty-api-tniw.onrender.com/docs)** – Interactive Swagger UI to explore and test the API endpoints.
+* **[Raw Data Endpoint](https://faculty-api-tniw.onrender.com/faculty/all)** – Access the live, processed JSON data directly from the database.
+
 ![Faculty Data Engineering Pipeline ETL Process](project_visual.png)
 
 ## Features
