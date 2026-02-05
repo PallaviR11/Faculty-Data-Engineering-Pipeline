@@ -445,6 +445,12 @@ The final stage of the pipeline is a custom-themed discovery portal built with S
 
  - **Consolidated Faculty Cards**: To improve data density and readability, all 13 fields (including match confidence and research specialization) are displayed within a single, rounded-corner card.
 
+## Interactive Research Portal
+
+![Faculty Finder Interface](faculty_finder_ui.png)
+
+*Full-width Streamlit interface (cropped for readability in README)*
+
 ## Dependencies
 
 - **Scrapy** – Web scraping and crawling framework for data ingestion.  
