@@ -449,7 +449,7 @@ The final stage of the pipeline is a custom-themed discovery portal built with S
 
 ![Faculty Finder Interface](faculty_finder_ui.png)
 
-*Full-width Streamlit interface (cropped for readability in README)*
+*Semantic faculty discovery using natural-language research queries (Streamlit interface)*
 
 ## Dependencies
 
