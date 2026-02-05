@@ -16,13 +16,14 @@ A complete end-to-end data engineering project designed to scrape faculty inform
 * **Persistent Storage:** Stores processed data in a local **SQLite** database.
 * **API Access:** Provides a **FastAPI** server to query and retrieve faculty data via REST endpoints.
 * **Cross-Platform Orchestration**: Includes shell scripts (`.sh` for Linux/macOS and `.ps1` for Windows) to automate the entire pipeline.
+* **Interactive Research Portal**: A custom-themed Streamlit application (app.py) providing a user-friendly interface for semantic faculty discovery.
 
 ## Pipeline Execution Flow
 The project is structured into four distinct stages:
 * **Ingestion:** Scrapy spiders extract raw data from faculty web pages.
 * **Transformation:** Python logic cleans and normalizes the raw data.
 * **Storage:** The structured data is loaded into a local SQLite database.
-* **Serving:** A FastAPI server exposes the data via REST endpoints.
+* **Serving:** Data is exposed via a FastAPI REST server and an interactive Streamlit research portal for end-users.
 
 ## Project Structure
 ```text
@@ -49,9 +50,8 @@ The project is structured into four distinct stages:
 ├── scrapy.cfg                # Scrapy configuration
 ├── embeddings.pt             # Pre-computed search vectors for near-instant search
 ├── pipeline_flow.png         # Visual architecture diagram
-├── app.py               # Main application
-├── style.css            # Your custom theme
-├── faculty_data.db      # SQLite database
+├── app.py                    # Main application
+├── style.css                 # Your custom theme
 ├── README.md                 # Project documentation
 └── .gitignore                # Excludes local data and virtual environments
 ```
@@ -62,58 +62,48 @@ The project is structured into four distinct stages:
 
 Follow these steps to set up the Faculty Data Engineering Pipeline on your local machine.
 
-### 1. Prerequisites
-
-* **Python 3.10+**
-* **curl**: Required for website connectivity checks in the shell script.
-
-  **On Ubuntu:**
-
-  ```bash
-  sudo apt update && sudo apt install curl -y
-  ```
-  
-### 2. Clone the Repository
-
-Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
-
-```bash
-git clone https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git
-```
-
-```bash
-cd Faculty-Data-Engineering-Pipeline
-```
-
-### 3. Create a Virtual Environment
-
-It is recommended to use a virtual environment to isolate project dependencies.
-
-**On Windows:**
-
-```bash
-python -m venv venv
-```
-
-```bash
-.\venv\Scripts\Activate.ps1
-```
-
-**On Linux (Ubuntu) / macOS:**
-
-```bash
-python3 -m venv venv
-```
-
-```bash
-source venv/bin/activate
-```
-
-### 4. Install Required Dependencies
-
-```bash
-pip install -r requirements.txt
-```
+ ### 1. Prerequisites
+ 
+  * **Python 3.10+**
+  * **curl**: Required for website connectivity checks in the shell script.
+ 
+    **On Ubuntu:**
+    ```bash
+    sudo apt update && sudo apt install curl -y
+    ```
+   
+ ### 2. Clone the Repository
+ 
+ Open your terminal (PowerShell on Windows, or Bash on Linux/macOS) and run:
+ ```bash
+ git clone https://github.com/PallaviR11/Faculty-Data-Engineering-Pipeline.git
+ ```
+ ```bash
+ cd Faculty-Data-Engineering-Pipeline
+ ```
+ 
+ ### 3. Create a Virtual Environment
+ It is recommended to use a virtual environment to isolate project dependencies.
+ **On Windows:**
+ ```bash
+ python -m venv venv
+ ```
+ ```bash
+ .\venv\Scripts\Activate.ps1
+ ```
+ 
+ **On Linux (Ubuntu) / macOS:**
+ ```bash
+ python3 -m venv venv
+ ```
+ ```bash
+ source venv/bin/activate
+ ```
+ 
+ ### 4. Install Required Dependencies
+ ```bash
+ pip install -r requirements.txt
+ ```
 
 ## Running the Pipeline
 
@@ -132,7 +122,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step A: Ingestion (Scraping)**
 
   Run the Scrapy spider to collect raw faculty data:
-
   ```bash
   .\depipeline.ps1 ingestion `
     --url https://www.daiict.ac.in/faculty `
@@ -142,7 +131,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step B: Transformation**
 
   Clean the raw JSON data:
-
   ```bash
   .\depipeline.ps1 transformation `
     --input raw_data.json `
@@ -152,7 +140,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step C: Storage**
 
   load the cleaned JSON data into the SQLite database
-
   ```bash
   .\depipeline.ps1 storage `
     --output cleaned_data.json `
@@ -162,10 +149,16 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step D: Serving (API)**
 
   Start the FastAPI server to expose the data:
-
   ```bash
   .\depipeline.ps1 serving `
     --db faculty_data.db
+  ```
+
+  **Step E: Interactive Research Portal**
+
+  Launch the final UI layer to explore the processed data
+  ```bash
+  streamlit run app.py
   ```
 
 * ### Running with Bash (depipeline.sh)
@@ -173,7 +166,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   *Linux / macOS / Git Bash / WSL*
 
   **Allow script execution (first time only)**
-
   ```bash
   chmod +x depipeline.sh
   ```
@@ -181,7 +173,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step A: Ingestion (Scraping)**
 
   Run the Scrapy spider to collect raw faculty data:
-
   ```bash
   ./depipeline.sh ingestion \
     --url https://www.daiict.ac.in/faculty \
@@ -191,7 +182,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step B: Transformation**
 
   Clean the raw JSON data:
-
   ```bash
   ./depipeline.sh transformation \
     --input raw_data.json \
@@ -201,7 +191,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step C: Storage**
 
   load the cleaned JSON data into the SQLite database
-
   ```bash
   ./depipeline.sh storage \
     --output cleaned_data.json \
@@ -211,12 +200,18 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   **Step D: Serving (API)**
 
   Start the FastAPI server to expose the data:
-
   ```bash
   ./depipeline.sh serving \
     --db faculty_data.db
   ```
 
+  **Step E: Interactive Research Portal**
+
+  Launch the final UI layer to explore the processed data
+  ```bash
+  streamlit run app.py
+  ```
+  
 ## Pipeline Orchestration Scripts
 
 - depipeline.ps1 (Windows / PowerShell)  
@@ -227,9 +222,10 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
 - ingestion – Scrapy spider to fetch raw JSON.  
 - transformation – Clean and normalize data (transformation.py).  
 - storage – Load into SQLite (storage.py).  
-- serving – Start FastAPI application.  
+- serving – Start FastAPI application.
+- Interactive UI – Launch the Streamlit portal to query the semantic embeddings visually. 
 
-This separation allows users to run, modify, or debug each stage independently.
+This modular architecture allows users to run, modify, or debug each stage of the data lifecycle—from ingestion to visual discovery—independently.
 
 ## API Documentation
 
@@ -425,6 +421,15 @@ To invoke the semantic search stage via the pipeline:
 ./depipeline.sh search --output cleaned_data.json
 ```
 
+## Interactive Research Portal
+The final stage of the pipeline is a custom-themed discovery portal built with Streamlit. This interface provides a human-readable layer over the semantic search engine.
+
+ - **Thematic Design**: Implements a "Scholarly Precision" theme using a **Sky Blue (#cadce6)** and **Deep Slate (#3c768c)** palette.
+
+ - **Styling Architecture**: Visuals are controlled via an external `style.css` file to ensure a clean separation between application logic and design.
+
+ - **Consolidated Faculty Cards**: To improve data density and readability, all 13 fields (including match confidence and research specialization) are displayed within a single, rounded-corner card.
+
 ## Dependencies
 
 - **Scrapy** – Web scraping and crawling framework for data ingestion.  
@@ -438,7 +443,7 @@ To invoke the semantic search stage via the pipeline:
 
 ## Future Enhancements
 
-- Cross-Institutional Scalability: Generalize parsing for multiple universities.  
-- Advanced Search & Filtering: Enable queries by department, research, or ranking.  
-- Analytical Dashboard: Visualize faculty trends using Streamlit or React.  
-- Automated Sync & Change Detection: Schedule periodic crawls with GitHub Actions or Cron. 
+- **Cross-Institutional Scalability**: Generalize the parsing logic to support faculty directories from multiple universities beyond DA-IICT.
+- **Advanced Filtering & Sorting**: Integrate sidebar controls in the Streamlit UI to filter results by department, designation, or academic rank.
+- **Automated Pipeline Orchestration**: Implement GitHub Actions to schedule periodic crawls and automate the re-computation of semantic embeddings.
+- **Deployment & Hosting**: Transition from a local environment to a production-grade cloud deployment using Streamlit Community Cloud or Hugging Face Spaces.
