@@ -9,10 +9,11 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Git
-.git/
-.gitignore
-
 # Local logs/temp
 logs/
 .DS_Store
+.vscode/
+.idea/
+
+# Large model folder (Since we download it in the Dockerfile)
+local_model_folder/
