@@ -49,7 +49,7 @@ The project is structured into four distinct stages:
 ├── requirements.txt          # Project dependencies
 ├── scrapy.cfg                # Scrapy configuration
 ├── embeddings.pt             # Pre-computed search vectors for near-instant search
-├── pipeline_flow.png         # Visual architecture diagram
+├── pipelineFlow.png         # Visual architecture diagram
 ├── app.py                    # Main application
 ├── style.css                 # Your custom theme
 ├── README.md                 # Project documentation
