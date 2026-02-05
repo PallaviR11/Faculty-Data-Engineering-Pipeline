@@ -1,0 +1,137 @@
+/* style.css */
+:root {
+    --bg-dark: hsl(194, 57%, 45%); 
+    --bg: hsl(194, 50%, 85%);     /* Main Teal Background */
+    --bg-light: hsl(194 40% 80%);     /* Cream Search Bar & Heading text */
+    --bg-faculty: hsl(194 25% 90%);
+    --text: hsl(194 50% 30);    /* Dark Slate for readability */
+    --text-muted: hsl(194, 30%, 60%);       /* Highlight Teal */
+    --text-light: hsl(194 25% 90%);
+    --sub-text: hsl(190, 7%, 83%);
+}
+
+/* App Background */
+.stApp {
+    background-color: var(--bg-light);
+}
+
+/* Titles and Headings */
+h1, h2, h3, .stSubheader {
+    color: var(--text) !important;
+}
+
+/* SEARCH INPUT WRAPPER */
+div[data-baseweb="base-input"] {
+    background-color: var(--bg-dark) !important;
+    border-radius: 12px !important;
+    transition: none !important;
+}
+
+/* INPUT FIELD */
+.stTextInput input {
+    background-color: var(--bg-dark) !important;
+    color: var(--text-light) !important;
+    border: none !important;
+}
+
+/* REMOVE BLUE OUTLINE
+.stTextInput input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+} */
+
+/* 1. NAME OF FACULTY (H4) */
+h4 {
+    color: var(--text) !important;
+    font-weight: 700 !important;
+    margin-bottom: 0px !important;
+}
+
+/* 2. TYPE OF FACULTY */
+.faculty-type {
+    color: var(--text-muted) !important;
+    font-weight: 600;
+}
+
+/* 3. ADDRESS COLOUR */
+.address-text {
+    color: var(--text-light) !important;
+    font-style: italic;
+}
+
+/* 4. RELEVANT INTERESTS BOX (st.info) */
+div[data-testid="stNotification"] {
+    background-color: var(--bg-dark) !important;
+    color: var(--text-light) !important;
+    border: none !important;
+    border-radius: 10px !important;
+}
+
+/* THE FACULTY CARD WRAPPER */
+.faculty-card {
+    background-color: var(--bg-faculty);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 6px 6px 0px var(--bg-dark);
+    margin-bottom: 30px;
+    border: none;
+}
+
+.faculty-card h4 { color: var(--text-muted) !important; }
+.faculty-card p, .faculty-card span { color: var(--text) !important; }
+
+
+/* Email Label Styling */
+.email-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+/* Institutional Link */
+.faculty-card a {
+    color: var(--bg-dark) !important;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* TARGET INNER INPUT CONTAINER (THIS CONTROLS BORDER) */
+div[data-baseweb="input"] {
+    background-color: var(--bg-dark) !important;
+    border-radius: 12px !important;
+    border: 2px solid var(--bg-dark) !important;
+    box-shadow: none !important;
+}
+
+/* REMOVE FOCUS RING */
+div[data-baseweb="input"]:focus-within {
+    border: 2px solid var(--bg-dark) !important;
+    box-shadow: none !important;
+}
+
+/* Email Box */
+.email-box {
+    margin-bottom: 18px;   /* space after email */
+}
+
+/* Specialization Box */
+.specialization-box {
+    margin-bottom: 18px;   /* space after specialization */
+}
+
+/* Score Text - make subtle */
+.score-text {
+    margin-top: 10px;
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.email-box {
+    margin-bottom: 18px;
+    font-weight: 400 !important;   /* remove bold */
+    font-family: inherit !important;  /* remove monospace feel */
+    color: var(--text) !important;
+}
