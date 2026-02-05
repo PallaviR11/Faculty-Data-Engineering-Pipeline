@@ -5,6 +5,7 @@ __pycache__/
 .env
 .venv/
 venv/
+new_venv/
 ENV/
 
 # ===== Scrapy =====
@@ -12,22 +13,15 @@ ENV/
 *.log
 
 # ===== Data pipeline outputs =====
-raw_data.json
-cleaned_data.json
-exported_data.json
-*.db
-# Exclude pre-computed vector tensors for the search engine
-embeddings.pt
+# We DO NOT ignore these so Render can use them immediately
+# raw_data.json  <-- You can ignore this if you want to keep GitHub clean
 
 # ===== AI & Local Model Cache =====
 # Exclude the large transformer model weights folder
+# Only ignore this if you are downloading the model during Docker build
 local_model_folder/
 
-# ===== OS files =====
+# ===== OS & Editors =====
 .DS_Store
-Thumbs.db
-.goutputstream*
-
-# ===== Editors =====
 .vscode/
 .idea/
