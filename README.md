@@ -12,7 +12,7 @@ A complete end-to-end data engineering project designed to scrape faculty inform
 
 Explore the different layers of the pipeline using the links below:
 
-* **[Interactive Research Portal](https://faculty-ui-yourlink.onrender.com)** – A user-friendly Streamlit interface for semantic faculty discovery.
+* **[Interactive Research Portal](https://semantic-faculty-search.streamlit.app/)** – A user-friendly Streamlit interface for semantic faculty discovery.
 * **[FastAPI Documentation](https://faculty-api-tniw.onrender.com/docs)** – Interactive Swagger UI to explore and test the API endpoints.
 * **[Raw Data Endpoint](https://faculty-api-tniw.onrender.com/faculty/all)** – Access the live, processed JSON data directly from the database.
 
