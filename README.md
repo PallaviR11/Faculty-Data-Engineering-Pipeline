@@ -6,7 +6,7 @@
 - **Program:** Msc Data Science 
 - **Institution:** DAIICT, Gandhinagar
 
-A complete end-to-end data engineering project designed to scrape faculty information, clean and transform the data, store it in a local database, and serve it via a FastAPI endpoint. This project is built to be cross-platform, running seamlessly on **Windows**, **Linux (Ubuntu)**, and **macOS**.
+An end-to-end data engineering pipeline that scrapes, cleans, and stores faculty data, exposing it via FastAPI. The system is fully cross-platform (Windows, Linux, macOS) and enables data-driven faculty discovery and academic research collaboration.
 
 ## Project Ecosystem (Live)
 The pipeline is deployed across a decoupled cloud architecture:
@@ -16,12 +16,12 @@ The pipeline is deployed across a decoupled cloud architecture:
 * **[Data Lake (JSON)](https://faculty-api-tniw.onrender.com/faculty/all)** – *Data Layer:* Direct access to the standardized faculty dataset.
 
 ## Features
-* **Automated Scraping:** Uses **Scrapy** to extract faculty details from web sources.
-* **Data Transformation:** Cleans raw JSON data into a structured format using Python.
+* **Automated Scraping:** Extracts faculty details using **Scrapy**.
+* **Data Transformation:** Cleans and normalizes raw JSON data.
 * **Persistent Storage:** Stores processed data in a local **SQLite** database.
-* **API Access:** Provides a **FastAPI** server to query and retrieve faculty data via REST endpoints.
-* **Cross-Platform Orchestration**: Includes shell scripts (`.sh` for Linux/macOS and `.ps1` for Windows) to automate the entire pipeline.
-* **Interactive Research Portal**: A custom-themed Streamlit application (app.py) providing a user-friendly interface for semantic faculty discovery.
+* **API Access:** Exposes faculty data via **FastAPI** REST endpoints.
+* **Cross-Platform Orchestration:** Shell scripts for Windows (`.ps1`) and Linux/macOS (`.sh`).
+* **Interactive Research Portal:** Streamlit-based UI for semantic faculty discovery.
 
 ## Pipeline Execution Flow
 ![Faculty Data Engineering Pipeline ETL Process](project_visual.png)
@@ -70,7 +70,7 @@ The project is structured into four distinct stages:
 
 ## Installation & Setup
 
-Follow these steps to set up the Faculty Data Engineering Pipeline on your local machine.
+Follow these steps to set up the pipeline locally.
 
  ### 1. Prerequisites
  
@@ -223,12 +223,12 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   ```
 
 ## Deployment & Cloud Architecture
-The project is containerized with **Docker** and deployed using a **Decoupled Architecture** to ensure scalability and reliability:
+The project is containerized with **Docker** and deployed using a decoupled cloud architecture:
 
-* **Frontend:** Hosted on **Streamlit Cloud** for a responsive, semantic discovery interface.
-* **Backend (API):** Hosted on **Render**, serving live JSON data via **FastAPI**.
-* **Performance:** The NLP model and `faculty_data.db` are **pre-cached** and **bundled** to ensure sub-second search latency and 100% uptime without the need for re-scraping.
-* **Containerization:** Includes a `Dockerfile` and `docker-compose.yml` for a one-command setup across any environment.
+* **Frontend:** Streamlit Cloud for the semantic discovery interface.
+* **Backend:** Render-hosted FastAPI service serving live JSON data.
+* **Performance:** Pre-cached NLP model and SQLite database ensure sub-second search latency.
+* **Containerization:** Includes Dockerfile and docker-compose for one-command setup.
   
 ## Pipeline Orchestration Scripts
 
@@ -247,7 +247,7 @@ This modular architecture allows users to run, modify, or debug each stage of th
 
 ## API Documentation
 
-Once the server is running, you can access the following endpoints:
+Available API endpoints:
 
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
@@ -279,7 +279,7 @@ Once the server is running, you can access the following endpoints:
 ```
 ## Data Dictionary
 
-The table below defines the schema for the `Faculty` database and describes the specific transformation logic used to clean "HTML noise" and standardize the data for the API.
+The table below defines the Faculty database schema and the transformation logic applied during data cleaning.
 
 | Field | SQLite Type | Description | Cleaning & Transformation Logic |
 | :--- | :--- | :--- | :--- |
@@ -377,7 +377,7 @@ python generate_stats.py faculty_data.db
 
 ## Semantic Search Engine
 
-This stage implements an **NLP-based semantic search engine** that goes beyond keyword matching by understanding the **intent** of user queries and retrieving faculty profiles based on **semantic relevance**.
+This stage implements an **NLP-based semantic search engine** that understands query intent and retrieves faculty profiles based on semantic relevance using vector embeddings.
 
 Using **vector embeddings**, faculty research domains and specializations are matched meaningfully to natural-language queries.
 
@@ -421,7 +421,7 @@ Dataset size: **111 faculty records**
 ```
 
 ## Interactive Research Portal
-The final stage of the pipeline is a custom-themed discovery portal built with Streamlit. This interface provides a human-readable layer over the semantic search engine.
+The final stage is a custom-themed Streamlit portal that provides a user-friendly interface for semantic faculty discovery.
 
  - **Thematic Design**: Implements a "Scholarly Precision" theme using a **Sky Blue (#cadce6)** and **Deep Slate (#3c768c)** palette.
 
