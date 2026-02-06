@@ -429,8 +429,6 @@ The final stage is a custom-themed Streamlit portal that provides a user-friendl
 
  - **Consolidated Faculty Cards**: To improve data density and readability, all 13 fields (including match confidence and research specialization) are displayed within a single, rounded-corner card.
 
-## Interactive Research Portal
-
 ![Faculty Finder Interface](faculty_finder_ui.png)
 
 *Semantic faculty discovery using natural-language research queries (Streamlit interface)*
