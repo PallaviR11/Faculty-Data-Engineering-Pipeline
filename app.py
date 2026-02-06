@@ -53,7 +53,7 @@ if query:
     cursor = conn.cursor()
     
     for i in range(len(indices)):
-        idx, score = indices[i], scores[i]
+        idx = indices[i]
         cursor.execute("""
             SELECT name, faculty_type, email, professional_link, address, specialization 
             FROM Faculty WHERE id = ?
@@ -89,13 +89,10 @@ View Institutional Profile</a></p>
 <strong>Research Specialization:</strong> {interests}
 </div>
 
-<div class="score-text">
-Match Confidence Score: {score:.2%}
-</div>
 </div>
 """
-
             st.markdown(faculty_html, unsafe_allow_html=True)
             st.write("")
     
     conn.close()
+
