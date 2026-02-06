@@ -8,15 +8,12 @@
 
 A complete end-to-end data engineering project designed to scrape faculty information, clean and transform the data, store it in a local database, and serve it via a FastAPI endpoint. This project is built to be cross-platform, running seamlessly on **Windows**, **Linux (Ubuntu)**, and **macOS**.
 
-## Live Project Links
+## Project Ecosystem (Live)
+The pipeline is deployed across a decoupled cloud architecture:
 
-Explore the different layers of the pipeline using the links below:
-
-* **[Interactive Research Portal](https://semantic-faculty-search.streamlit.app/)** – A user-friendly Streamlit interface for semantic faculty discovery.
-* **[FastAPI Documentation](https://faculty-api-tniw.onrender.com/docs)** – Interactive Swagger UI to explore and test the API endpoints.
-* **[Raw Data Endpoint](https://faculty-api-tniw.onrender.com/faculty/all)** – Access the live, processed JSON data directly from the database.
-
-![Faculty Data Engineering Pipeline ETL Process](project_visual.png)
+* **[Research Portal](https://semantic-faculty-search.streamlit.app/)** – *Frontend:* Semantic discovery interface built with Streamlit.
+* **[API Gateway](https://faculty-api-tniw.onrender.com/docs)** – *Backend:* Swagger UI documentation for the FastAPI REST service.
+* **[Data Lake (JSON)](https://faculty-api-tniw.onrender.com/faculty/all)** – *Data Layer:* Direct access to the standardized faculty dataset.
 
 ## Features
 * **Automated Scraping:** Uses **Scrapy** to extract faculty details from web sources.
@@ -27,6 +24,7 @@ Explore the different layers of the pipeline using the links below:
 * **Interactive Research Portal**: A custom-themed Streamlit application (app.py) providing a user-friendly interface for semantic faculty discovery.
 
 ## Pipeline Execution Flow
+![Faculty Data Engineering Pipeline ETL Process](project_visual.png)
 The project is structured into four distinct stages:
 * **Ingestion:** Scrapy spiders extract raw data from faculty web pages.
 * **Transformation:** Python logic cleans and normalizes the raw data.
@@ -36,10 +34,10 @@ The project is structured into four distinct stages:
 ## Project Structure
 ```text
 ├── faculty_scraper/          # Scrapy project root
-│   ├── __init__.py           # Package initialization
 │   ├── spiders/              # Crawler directory
 │   │   ├── __init__.py       # Package initialization
 │   │   └── faculty_spider.py # Core web scraping logic
+│   ├── __init__.py           # Package initialization
 │   ├── items.py              # Scraped data containers
 │   ├── middlewares.py        # Request/Response processing
 │   ├── pipelines.py          # Default (empty) pipelines
@@ -47,26 +45,25 @@ The project is structured into four distinct stages:
 ├── local_model_folder/       # Cached transformer model (speed optimization)
 ├── logs/                     # Audit logs
 │   └── llm_usage.md          # AI interaction records
-├── transformation.py         # Cleans raw JSON and removes HTML noise
-├── storage.py                # Loads cleaned JSON into SQLite database
-├── semantic_search.py        # NLP-based interactive search engine
-├── generate_stats.py         # Auditing tool: Data density and quality metrics
+├── .dockerignore             # Excludes local venv and cache from the build
+├── .gitignore                # Excludes local data and virtual environments
+├── README.md                 # Project documentation
 ├── api_server.py             # FastAPI: Serves processed data via REST endpoints
-├── depipeline.sh             # Linux/macOS: Pipeline orchestration script
+├── app.py                    # Main application
+├── cleaned_data.json         # JSON: Standardized and cleaned faculty data
 ├── depipeline.ps1            # Windows: Pipeline orchestration script
+├── depipeline.sh             # Linux/macOS: Pipeline orchestration script
+├── embeddings.pt             # PyTorch: Pre-computed vectors for semantic search
+├── faculty_data.db           # SQLite: Final relational storage for API & Search
+├── generate_stats.py         # Auditing tool: Data density and quality metrics
+├── project_visual.png        # Visual architecture diagram
+├── raw_data.json             # JSON: Original data as extracted by Scrapy
 ├── requirements.txt          # Project dependencies
 ├── scrapy.cfg                # Scrapy configuration
-├── embeddings.pt             # Pre-computed search vectors for near-instant search
-├── pipelineFlow.png         # Visual architecture diagram
-├── app.py                    # Main application
+├── semantic_search.py        # NLP-based interactive search engine
+├── storage.py                # Loads cleaned JSON into SQLite database
 ├── style.css                 # Your custom theme
-├── faculty_data.db           # SQLite: Final relational storage for API & Search
-├── embeddings.pt             # PyTorch: Pre-computed vectors for semantic search
-├── cleaned_data.json         # JSON: Standardized and cleaned faculty data
-├── raw_data.json             # JSON: Original data as extracted by Scrapy
-├── README.md                 # Project documentation
-├── .dockerignore             # Excludes local venv and cache from the build
-└── .gitignore                # Excludes local data and virtual environments
+└── transformation.py         # Cleans raw JSON and removes HTML noise
 ```
 > Note: Although the project includes a default `pipelines.py` file, the Transformation and Storage stages are implemented as separate standalone scripts (`transformation.py` and `storage.py`).  
 > This allows users to run, modify, or debug each stage independently, giving full control over data cleaning and database loading.
@@ -225,14 +222,13 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   streamlit run app.py
   ```
 
-## Deployment & Containerization
-The project is containerized with Docker to ensure the pipeline runs identically on any system and is ready for cloud deployment.
+## Deployment & Cloud Architecture
+The project is containerized with **Docker** and deployed using a **Decoupled Architecture** to ensure scalability and reliability:
 
-- **Dockerfile**: Defines the environment and pre-caches the NLP model to ensure fast startup on Render.
-
-- **Docker Compose**: Orchestrates the FastAPI and Streamlit services to work together with a single command: docker-compose up --build.
-
-- **Data Persistence**: The GitHub repository includes faculty_data.db and embeddings.pt so the app is functional immediately upon deployment.
+* **Frontend:** Hosted on **Streamlit Cloud** for a responsive, semantic discovery interface.
+* **Backend (API):** Hosted on **Render**, serving live JSON data via **FastAPI**.
+* **Performance:** The NLP model and `faculty_data.db` are **pre-cached** and **bundled** to ensure sub-second search latency and 100% uptime without the need for re-scraping.
+* **Containerization:** Includes a `Dockerfile` and `docker-compose.yml` for a one-command setup across any environment.
   
 ## Pipeline Orchestration Scripts
 
@@ -303,8 +299,9 @@ The table below defines the schema for the `Faculty` database and describes the 
 
  The Faculty database consists of 111 records.
 
-## Data Transformation Logic
-
+<details>
+<summary><b>View Detailed Transformation Logic</b></summary>
+ 
 - Validates raw JSON input existence.  
 - Flattens list-type fields into strings.  
 - Normalizes text and removes HTML noise.  
@@ -314,15 +311,14 @@ The table below defines the schema for the `Faculty` database and describes the 
 - Standardizes fields:  
   - Names → Title Case.  
   - Faculty type → hyphens replaced by spaces, Title Case.  
-- Writes output to cleaned_data.json.
+- Writes output to cleaned_data.json
+#### Advanced Cleaning Features:
 
-### Advanced Cleaning Features:
-
-* **Recursive Punctuation Collapse:** Uses a while-loop to ensure all "stuttered" commas (e.g., `, , ,`) are reduced to a single comma.
-
-* **Unicode & Artifact Stripping:** Removes literal backslashes and escaped quote noise (`\"`) left over from the scraping process.
-
-* **Whitespace Invariant Processing:** Utilizes `.split()` and `.join()` to clear invisible formatting characters (tabs/newlines) hidden within raw text fragments. 
+- Uses a while-loop to ensure all "stuttered" commas (e.g., `, , ,`) are reduced to a single comma.
+- Removes literal backslashes and escaped quote noise (`\"`) left over from the scraping process.
+- Utilizes `.split()` and `.join()` to clear invisible formatting characters (tabs/newlines) hidden within raw text fragments. 
+  
+</details>
 
 ## Data Storage Logic
 
@@ -381,67 +377,47 @@ python generate_stats.py faculty_data.db
 
 ## Semantic Search Engine
 
-This stage integrates a **Natural Language Processing (NLP)**–based semantic search engine that extends beyond traditional keyword matching.  
+This stage implements an **NLP-based semantic search engine** that goes beyond keyword matching by understanding the **intent** of user queries and retrieving faculty profiles based on **semantic relevance**.
 
-Using **vector embeddings**, the system interprets the academic intent of user queries and retrieves faculty profiles based on the **semantic relevance** of their research domains and specializations.
-
----
+Using **vector embeddings**, faculty research domains and specializations are matched meaningfully to natural-language queries.
 
 ### Core Technology
 
-- **Model**  
+- **Embedding Model**  
+  Uses `all-MiniLM-L6-v2` (SentenceTransformer) for efficient sentence-level embeddings.
 
-  Utilizes the `all-MiniLM-L6-v2` SentenceTransformer for efficient and accurate sentence-level text embeddings.
-
-- **Vectorization**  
-
-  Faculty attributes (`name`, `specialization`, `research`, `biography`) are concatenated into a single textual representation and encoded into **384-dimensional dense vectors**.
+- **Vector Representation**  
+  Faculty fields (`name`, `specialization`, `research`, `biography`) are combined and encoded into **384-dimensional dense vectors**.
 
 - **Similarity Metric**  
-
-**Cosine Similarity** is used to compute semantic closeness between the query embedding and faculty profile embeddings for ranking results.
-
----
+  **Cosine Similarity** ranks faculty profiles by semantic closeness to the query.
 
 ### Performance Optimizations
 
-The following optimizations ensure low-latency and production-ready performance:
-
 - **Local Model Caching**  
-
-  The transformer model is stored locally in `./local_model_folder`, removing external network dependency and reducing initialization time by approximately **70%**.
+  Model stored in `./local_model_folder`, eliminating network dependency and reducing startup time by ~**70%**.
 
 - **Precomputed Embeddings**  
-
-  Faculty embeddings are serialized and stored in `embeddings.pt`.  
-  Subsequent searches reuse these embeddings, avoiding redundant computation.
+  Faculty embeddings are serialized in `embeddings.pt` and reused across searches to avoid recomputation.
 
 - **Persistent Search Loop**  
+  Enables multiple queries per run without reloading the model.
 
-  The search engine operates in an interactive loop, allowing multiple queries per execution without repeated model loading.
-
----
 ### Search Benchmarks
 
-Performance metrics based on a dataset containing **111 faculty records**:
+Dataset size: **111 faculty records**
+
 | Metric | Value |
 |------|------|
-| Model Startup Time | ~2.1 seconds (local) |
+| Model Startup Time | ~2.1 s (local) |
 | Average Search Latency | 35–45 ms |
----
 
 ### Execution
 
-To invoke the semantic search stage via the pipeline:
-
 **PowerShell (Windows)**
+
 ```powershell
 .\depipeline.ps1 search --output cleaned_data.json
-```
-
-**Bash (Linux / macOS)**
-```bash
-./depipeline.sh search --output cleaned_data.json
 ```
 
 ## Interactive Research Portal
@@ -460,6 +436,12 @@ The final stage of the pipeline is a custom-themed discovery portal built with S
 *Semantic faculty discovery using natural-language research queries (Streamlit interface)*
 
 ## Dependencies
+The project utilizes a dual-requirement structure to optimize for local development and cloud deployment.
+
+- **Production (requirements.txt):** Lightweight dependencies for the Streamlit UI and Semantic Search
+  • Streamlit    • Torch • Sentence-Transformers • Pandas • SQLite3
+- **Development (dev_requirements.txt):** Full engineering suite including
+  • Scrapy • FastAPI • Uvicorn • Pydantic
 
 - **Scrapy** – Web scraping and crawling framework for data ingestion.  
 - **Pandas** – Data cleaning, transformation, and auditing.  
