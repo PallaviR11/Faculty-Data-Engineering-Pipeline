@@ -68,9 +68,9 @@ The project is structured into four distinct stages:
 > Note: Although the project includes a default `pipelines.py` file, the Transformation and Storage stages are implemented as separate standalone scripts (`transformation.py` and `storage.py`).  
 > This allows users to run, modify, or debug each stage independently, giving full control over data cleaning and database loading.
 
-## Installation & Setup
+## Data Engineering: Installation & Setup
 
-Follow these steps to set up the pipeline locally.
+Follow these steps to set up the full engineering environment required for scraping, processing, and serving the API.
 
  ### 1. Prerequisites
  
@@ -112,7 +112,7 @@ Follow these steps to set up the pipeline locally.
  
  ### 4. Install Required Dependencies
  ```bash
- pip install -r requirements.txt
+ pip install -r dev_requirements.txt
  ```
 
 ## Running the Pipeline
@@ -164,13 +164,6 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
     --db faculty_data.db
   ```
 
-  **Step E: Interactive Research Portal**
-
-  Launch the final UI layer to explore the processed data
-  ```bash
-  streamlit run app.py
-  ```
-
 * ### Running with Bash (depipeline.sh)
 
   *Linux / macOS / Git Bash / WSL*
@@ -213,11 +206,18 @@ You can execute the pipeline stage by stage using either Bash (.sh) or PowerShel
   ```bash
   ./depipeline.sh serving \
     --db faculty_data.db
+  ``` 
+
+## Launching the Interactive Research Portal
+
+The discovery portal is designed to be a lightweight frontend that can run independently of the data engineering pipeline using the pre-cached database and embeddings.
+
+ **Step A: Install Production Dependencies**
+  ```bash
+  pip install -r requirements.txt
   ```
 
-  **Step E: Interactive Research Portal**
-
-  Launch the final UI layer to explore the processed data
+  **Step B: Launch the Portal**
   ```bash
   streamlit run app.py
   ```
