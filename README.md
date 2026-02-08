@@ -1,10 +1,7 @@
 # Faculty Data Engineering Pipeline
 
 ## Author
-- **Name:** Pallavi Raghuvanshi  
-- **Roll No:** 202518026
-- **Program:** Msc Data Science 
-- **Institution:** DAIICT, Gandhinagar
+- Pallavi Raghuvanshi  
 
 An end-to-end data engineering pipeline that scrapes, cleans, and stores faculty data, exposing it via FastAPI. The system is fully cross-platform (Windows, Linux, macOS) and enables data-driven faculty discovery and academic research collaboration.
 
